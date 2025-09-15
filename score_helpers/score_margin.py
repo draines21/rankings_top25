@@ -1,0 +1,36 @@
+from resume_weights import RESUME_WEIGHTS
+
+weights= RESUME_WEIGHTS
+
+
+def score_margin_of_victory(games, team_name, ranked_schools, weights):
+    margin_score = 0
+    margin_weight = weights["score_margin"]
+    for game in games:
+        home_pts = game["homePoints"]
+        away_pts = game["awayPoints"]
+
+        if home_pts is None or away_pts is None:
+            continue
+
+        home = game["homeTeam"]
+        away = game["awayTeam"]
+        team_is_home = home == team_name
+        team_score = home_pts if team_is_home else away_pts
+        opp_score = away_pts if team_is_home else home_pts
+        opponent = away if team_is_home else home
+
+        if team_score > opp_score:
+            margin = team_score - opp_score
+            units = margin // 6
+            bonus = units * margin_weight
+            if opponent in ranked_schools:
+                bonus *= 1.25
+            margin_score += bonus
+    return margin_score
+
+
+
+        
+
+

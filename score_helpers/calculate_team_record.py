@@ -1,5 +1,5 @@
 from request_helper import get_json
-from fetch_team_games import fetch_team_games
+from fetch_helpers.fetch_team_games import fetch_team_games
 
 
 def calculate_team_record(team_games, team_name):

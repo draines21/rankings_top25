@@ -1,5 +1,5 @@
 import requests
-from config import CFBD_API_KEY, BASE_URL, HEADERS
+from config import BASE_URL
 from request_helper import get_json
 
 

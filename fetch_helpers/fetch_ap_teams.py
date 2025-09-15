@@ -12,5 +12,5 @@ def get_ap_teams(year):
     ap_poll = next(poll for poll in latest_entry["polls"] if poll["poll"] == "AP Top 25")
     return ap_poll["ranks"]
 
-printer.pprint(get_ap_teams(2025))
+
 
