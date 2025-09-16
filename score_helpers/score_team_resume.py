@@ -33,7 +33,6 @@ def score_team_resume(games, team_name, ranked_schools, weights):
     resume_score += score_for_loss
     resume_score += score_for_bad_loss
     resume_score += margin_victory_score
-    
     return resume_score, record
 
 
