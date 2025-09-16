@@ -1,6 +1,9 @@
 from resume_weights import RESUME_WEIGHTS
 
-weights= RESUME_WEIGHTS
+"""calculates scoring margin and adds a bonus for per 6 pts of difference"""
+
+
+
 
 
 def score_margin_of_victory(games, team_name, ranked_schools, weights):

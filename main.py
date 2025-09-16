@@ -8,11 +8,11 @@ from score_helpers.score_ranked_wins import score_ranked_wins
 from fetch_helpers.fetch_all_games import fetch_all_games
 printer = PrettyPrinter(depth=4, width=120)
 """
-Main entry point for generating team records and sorting Top 25 by win count.
+Main entry point for generating all the teams resume scores and sorting them into the Top 25 teams in the country.
 """
 
 def main():
-    all_teams = fetch_all_teams()
+    all_teams = fetch_all_teams(2025)
     all_games = fetch_all_games(2025)
     ranked_schools = {team["school"] for team in get_ap_teams(2025)}
     printer = PrettyPrinter(depth=5, width=120)

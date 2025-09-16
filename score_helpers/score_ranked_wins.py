@@ -1,6 +1,9 @@
 from fetch_helpers.fetch_team_games import fetch_team_games
 from fetch_helpers.fetch_ap_teams import get_ap_teams
 
+"""Adds a count for regular win against and unranked opponent and a count for wins against a ranked opponent"""
+
+
 
 def score_ranked_wins(games, team_name, ranked_schools):
     ranked_win_count = 0
