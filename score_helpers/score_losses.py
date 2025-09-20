@@ -1,10 +1,14 @@
-from fetch_helpers.fetch_ap_teams import get_ap_teams
+from resume_weights import RESUME_WEIGHTS, POWER_CONFERENCES
+weights = RESUME_WEIGHTS
 
 
-"""Creating a loss count for regular loss and count for losses to unranked opponents to which apply weights to later"""
+"""Creating a score for regular loss and count for losses to unranked opponents to which apply weights to later"""
 
-def score_loss(games, team_name, ranked_schools):
-    loss_count = 0
+def score_ranked_loss(games, team_name, ranked_schools):
+    score = 0
+    penalty = weights["loss"]
+   
+    
     
     for game in games:
         try:
@@ -21,17 +25,19 @@ def score_loss(games, team_name, ranked_schools):
             opp_score = away_pts if team_is_home else home_pts
             opponent = away if team_is_home else home
             if team_score < opp_score and opponent in ranked_schools:
-                loss_count += 1
+                score += penalty   #negative value
 
         except KeyError as e:
             print(f"Skipping game due to missing key: {e}")
             continue
-    return loss_count
+    return score
 
 
 
-def score_bad_loss(games, team_name, ranked_schools):
-    loss_count = 0
+def score_unranked_loss(games, team_name, ranked_schools):
+    score = 0
+    penalty = weights["unranked_loss"]
+
 
     for game in games:
         try:
@@ -49,12 +55,12 @@ def score_bad_loss(games, team_name, ranked_schools):
             opponent = away if team_is_home else home
 
             if team_score < opp_score and opponent not in ranked_schools:
-                loss_count += 1
+                score += penalty #more severe penalty
         except KeyError as e:
             print(f"Skipping game due to missing key: {e}")
             continue
         
-    return loss_count
+    return score
 
 
 

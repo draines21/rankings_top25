@@ -4,15 +4,19 @@ from fetch_helpers.fetch_ap_teams import get_ap_teams
 from fetch_helpers.fetch_all_games import fetch_all_games
 from score_helpers.score_team_resume import score_team_resume
 from resume_weights import RESUME_WEIGHTS
+from fetch_helpers.cache_helpers import load_or_fetch
+from fetch_helpers.fetch_all_team_conf import conference_team_map
 printer = PrettyPrinter(depth=4, width=120)
 """
 Main entry point for generating all the teams resume scores and sorting them into the Top 25 teams in the country.
 """
 
 def main():
-    all_teams = fetch_all_teams()
-    all_games = fetch_all_games(2025)
-    ranked_schools = {team["school"] for team in get_ap_teams(2025)}
+    all_teams = load_or_fetch("cached_teams.json", lambda: fetch_all_teams())
+    all_games = load_or_fetch("cached_games.json", lambda: fetch_all_games(2025))
+    ap_teams = load_or_fetch("cached_ap.json", lambda: get_ap_teams(2025))
+    team_conferences = load_or_fetch("team_conferences_2025.json", lambda: conference_team_map())
+    ranked_schools = {team["school"] for team in ap_teams}
     resume_ranks = []
     for team in all_teams:
         name = team["school"]
@@ -20,7 +24,7 @@ def main():
 
         if not team_games:
             continue
-        score, record = score_team_resume(team_games, name, ranked_schools, RESUME_WEIGHTS)
+        score, record = score_team_resume(team_games, name, ranked_schools, RESUME_WEIGHTS, team_conferences)
         resume_ranks.append({"team": name,
                              "score": score,
                              "record": record})
