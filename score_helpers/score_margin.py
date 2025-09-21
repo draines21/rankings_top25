@@ -5,7 +5,6 @@ from resume_weights import RESUME_WEIGHTS
 
 
 
-
 def score_margin_of_victory(games, team_name, ranked_schools, weights):
     margin_score = 0
     margin_weight = weights["score_margin"]
@@ -25,11 +24,21 @@ def score_margin_of_victory(games, team_name, ranked_schools, weights):
 
         if team_score > opp_score:
             margin = team_score - opp_score
-            units = margin // 6
+            units = min(margin // 6, 5)
             bonus = units * margin_weight
             if opponent in ranked_schools:
-                bonus *= 1.25
+                rank = ranked_schools[opponent]
+                if rank <= 5:
+                    bonus *= 1.5
+                elif rank <= 10:
+                    bonus *+ 1.3
+                else:
+                    bonus *= 1.1
             margin_score += bonus
+
+
+
+
     return margin_score
 
 

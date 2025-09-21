@@ -7,15 +7,26 @@ def calculate_team_record(team_games, team_name):
     losses = 0
 
     for game in team_games:
-        teams = game.get("teams", [])
-        team_info = next((t for t in teams if t['team'] == team_name), None)
-        opponent_info = next((t for t in teams if t["team"] != team_name), None)
+        home = game.get("homeTeam")
+        away = game.get("awayTeam")
+        home_points = game.get("homePoints")
+        away_points = game.get("awayPoints")
 
-        if team_info and opponent_info:
-            if int(team_info["points"]) > int(opponent_info["points"]):
+        # Skip bye games or future games
+        if home_points is None or away_points is None:
+            continue
+
+        if team_name == home:
+            if home_points > away_points:
                 wins += 1
-            elif int(team_info["points"]) < int(opponent_info["points"]):
+            elif home_points < away_points:
                 losses += 1
+        elif team_name == away:
+            if away_points > home_points:
+                wins += 1
+            elif away_points < home_points:
+                losses += 1
+
     return {"team": team_name, "wins": wins, "losses": losses}
 
 

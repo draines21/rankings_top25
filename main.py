@@ -15,8 +15,14 @@ def main():
     all_teams = load_or_fetch("cached_teams.json", lambda: fetch_all_teams())
     all_games = load_or_fetch("cached_games.json", lambda: fetch_all_games(2025))
     ap_teams = load_or_fetch("cached_ap.json", lambda: get_ap_teams(2025))
-    team_conferences = load_or_fetch("team_conferences_2025.json", lambda: conference_team_map())
-    ranked_schools = {team["school"] for team in ap_teams}
+    raw_confs = load_or_fetch("team_conferences_2025.json", lambda: conference_team_map())
+    if isinstance(raw_confs, list):
+        team_conferences = {entry["school"]: entry["conference"] for entry in raw_confs}
+    else:
+        team_conferences = raw_confs
+
+
+    ranked_schools = {team["school"]: team["rank"] for team in ap_teams}
     resume_ranks = []
     for team in all_teams:
         name = team["school"]
